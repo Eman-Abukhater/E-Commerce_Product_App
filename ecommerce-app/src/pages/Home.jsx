@@ -10,7 +10,15 @@ export default function Home() {
   }, []);
 
   return (
-    
-      console.log(products)
+    <div>
+      {products.map((product) => (
+        <div key={product.id}>
+          <img src={product.image} className="w-30 h-auto" alt={product.title} />
+          <h2>{product.title}</h2>
+          <p>${product.price}</p>
+          <p>{product.category}</p>
+        </div>
+      ))}
+    </div>
   );
 }
