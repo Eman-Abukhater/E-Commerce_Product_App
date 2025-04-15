@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Filter from "./components/Filter"; // Import the Filter component
+import Filter from "../components/Filter";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
