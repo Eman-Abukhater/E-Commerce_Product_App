@@ -46,12 +46,12 @@ Build a complete E-Commerce UI using React that includes product listings, detai
   - Friendly alerts for actions like adding to cart/wishlist
 
 - **State Management**  
-  - Uses React Context API or Redux for global state
+  - Uses React Context API for global state
 
 - **Responsive UI**  
-  - Designed for all screen sizes using Tailwind CSS or MUI
+  - Designed for all screen sizes using Tailwind CSS 
 
-- **Dark Mode (Optional)**  
+- **Dark Mode **  
   - Toggle between dark and light modes
 
 - **Loaders / Skeletons**  
