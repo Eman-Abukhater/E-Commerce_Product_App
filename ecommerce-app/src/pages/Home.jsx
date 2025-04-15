@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Filter from "./components/Filter";  // Import the Filter component
+import Filter from "./components/Filter"; // Import the Filter component
 
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");  // State for selected category
-  const [sort, setSort] = useState("");  // State for sorting order
+  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
+  const [sort, setSort] = useState(""); // State for sorting order
 
   useEffect(() => {
     // Fetch products from API
@@ -18,32 +18,31 @@ export default function Home() {
         const uniqueCategories = [
           ...new Set(data.map((product) => product.category)),
         ];
-        setCategories(uniqueCategories);  // Update categories list
+        setCategories(uniqueCategories); // Update categories list
       })
       .catch((error) => console.error("Error fetching products:", error));
   }, []);
 
   // Handler functions to update state
   const handleCategoryChange = (category) => {
-    setSelectedCategory(category);  // Update selected category
+    setSelectedCategory(category); // Update selected category
   };
 
   const handleSortChange = (sortOption) => {
-    setSort(sortOption);  // Update sorting option (asc/desc)
+    setSort(sortOption); // Update sorting option (asc/desc)
   };
 
   // Filter and sort the products based on selected options
-  const filteredProducts = products
-    .filter((product) => {
-      return (
-        (selectedCategory === "" || product.category === selectedCategory) // Filter by category
-      );
-    })
-    .sort((a, b) => {
-      if (sort === "asc") return a.price - b.price;  // Sort by price (Low → High)
-      if (sort === "desc") return b.price - a.price;  // Sort by price (High → Low)
-      return 0;  // No sorting
-    });
+  const filteredProducts =
+    selectedCategory === ""
+      ? products // If no category selected, return all products
+      : products
+          .filter((product) => product.category === selectedCategory) // Otherwise, filter by selected category
+          .sort((a, b) => {
+            if (sort === "asc") return a.price - b.price; // Sort by price (Low → High)
+            if (sort === "desc") return b.price - a.price; // Sort by price (High → Low)
+            return 0; // No sorting
+          });
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8 md:px-8">
@@ -71,9 +70,15 @@ export default function Home() {
               alt={product.title}
               className="h-48 object-contain w-full mb-4"
             />
-            <h2 className="text-md font-semibold line-clamp-2 mb-2">{product.title}</h2>
-            <p className="text-indigo-500 font-bold text-lg">${product.price}</p>
-            <p className="text-sm text-gray-500 mb-2 capitalize">{product.category}</p>
+            <h2 className="text-md font-semibold line-clamp-2 mb-2">
+              {product.title}
+            </h2>
+            <p className="text-indigo-500 font-bold text-lg">
+              ${product.price}
+            </p>
+            <p className="text-sm text-gray-500 mb-2 capitalize">
+              {product.category}
+            </p>
             <div className="flex items-center gap-1 text-yellow-500 text-sm">
               ⭐ {product.rating.rate} ({product.rating.count})
             </div>
