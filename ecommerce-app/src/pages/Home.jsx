@@ -5,36 +5,32 @@ import ProductCard from "../components/ProductCard";
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
-  const [sort, setSort] = useState(""); // State for sorting order
-  const [searchText, setSearchText] = useState(""); // State for search input
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sort, setSort] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [minRating, setMinRating] = useState("");
 
   useEffect(() => {
-    // Fetch products from API
     fetch("https://fakestoreapi.com/products")
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);
-
-        // Extract unique categories from the products
         const uniqueCategories = [
           ...new Set(data.map((product) => product.category)),
         ];
-        setCategories(uniqueCategories); // Update categories list
+        setCategories(uniqueCategories);
       })
       .catch((error) => console.error("Error fetching products:", error));
   }, []);
 
-  // Handler functions to update state
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category); // Update selected category
-  };
+  const handleCategoryChange = (category) => setSelectedCategory(category);
+  const handleSortChange = (sortOption) => setSort(sortOption);
+  const handleMinPriceChange = (price) => setMinPrice(price);
+  const handleMaxPriceChange = (price) => setMaxPrice(price);
+  const handleMinRatingChange = (rating) => setMinRating(rating);
 
-  const handleSortChange = (sortOption) => {
-    setSort(sortOption); // Update sorting option (asc/desc)
-  };
-
-  // Filter and sort the products based on selected options
   const filteredProducts = products
     .filter((product) =>
       selectedCategory ? product.category === selectedCategory : true
@@ -42,9 +38,20 @@ export default function Home() {
     .filter((product) =>
       product.title.toLowerCase().includes(searchText.toLowerCase())
     )
+    .filter((product) =>
+      minPrice ? product.price >= parseFloat(minPrice) : true
+    )
+    .filter((product) =>
+      maxPrice ? product.price <= parseFloat(maxPrice) : true
+    )
+    .filter((product) =>
+      minRating ? product.rating.rate >= parseFloat(minRating) : true
+    )
     .sort((a, b) => {
       if (sort === "asc") return a.price - b.price;
       if (sort === "desc") return b.price - a.price;
+      if (sort === "az") return a.title.localeCompare(b.title);
+      if (sort === "za") return b.title.localeCompare(a.title);
       return 0;
     });
 
@@ -63,16 +70,22 @@ export default function Home() {
         className="w-full p-2 border rounded-lg mb-6"
       />
 
-      {/* Pass the props to the Filter component */}
+      {/* Filters */}
       <Filter
         categories={categories}
         selectedCategory={selectedCategory}
         onCategoryChange={handleCategoryChange}
         sort={sort}
         onSortChange={handleSortChange}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        onMinPriceChange={handleMinPriceChange}
+        onMaxPriceChange={handleMaxPriceChange}
+        minRating={minRating}
+        onMinRatingChange={handleMinRatingChange}
       />
 
-      {/* Products grid */}
+      {/* Products */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredProducts.length === 0 ? (
           <p className="text-center col-span-full text-gray-500">
