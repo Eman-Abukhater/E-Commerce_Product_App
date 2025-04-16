@@ -38,7 +38,11 @@ export function CartProvider({ children }) {
   };
   // Update quantity of a product
   const updateQuantity = (productId, newQty) => {
-    if (newQty < 1) return; 
+    if (newQty < 1) {
+      removeFromCart(productId);
+      return;
+    }
+
     const updated = cartItems.map((item) =>
       item.id === productId ? { ...item, quantity: newQty } : item
     );
