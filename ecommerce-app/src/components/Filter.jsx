@@ -12,9 +12,10 @@ export default function Filter({
   onMaxPriceChange,
   minRating,
   onMinRatingChange,
+  onClearFilters,
 }) {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center mb-6">
+    <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center mb-6 justify-center  ">
       {/* Category Filter */}
       <select
         value={selectedCategory}
@@ -35,14 +36,14 @@ export default function Filter({
         placeholder="Min Price"
         value={minPrice}
         onChange={(e) => onMinPriceChange(e.target.value)}
-        className="border p-2 rounded-lg w-28"
+        className="border p-2 rounded-lg w-28 mx-auto sm:mx-0"
       />
       <input
         type="number"
         placeholder="Max Price"
         value={maxPrice}
         onChange={(e) => onMaxPriceChange(e.target.value)}
-        className="border p-2 rounded-lg w-28"
+        className="border p-2 rounded-lg w-28 mx-auto sm:mx-0 "
       />
 
       {/* Rating Filter */}
@@ -71,6 +72,13 @@ export default function Filter({
         <option value="az">Title: A → Z</option>
         <option value="za">Title: Z → A</option>
       </select>
+       {/* Clear Filters Button */}
+       <button
+        onClick={onClearFilters}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition"
+      >
+        Clear Filters
+      </button>
     </div>
   );
 }

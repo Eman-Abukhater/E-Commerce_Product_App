@@ -30,6 +30,14 @@ export default function Home() {
   const handleMinPriceChange = (price) => setMinPrice(price);
   const handleMaxPriceChange = (price) => setMaxPrice(price);
   const handleMinRatingChange = (rating) => setMinRating(rating);
+  const handleClearFilters = () => {
+    setSelectedCategory("");
+    setSort("");
+    setSearchText("");
+    setMinPrice("");
+    setMaxPrice("");
+    setMinRating("");
+  };
 
   const filteredProducts = products
     .filter((product) =>
@@ -83,6 +91,7 @@ export default function Home() {
         onMaxPriceChange={handleMaxPriceChange}
         minRating={minRating}
         onMinRatingChange={handleMinRatingChange}
+        onClearFilters={handleClearFilters}
       />
 
       {/* Products */}
