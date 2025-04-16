@@ -1,13 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </Router>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-100">
+        {/* You’ll add Navbar here later */}
+        <AppRoutes />
+      </div>
+    </BrowserRouter>
   );
 }
 
