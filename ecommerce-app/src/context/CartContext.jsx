@@ -36,6 +36,14 @@ export function CartProvider({ children }) {
     const updated = cartItems.filter((item) => item.id !== productId);
     setCartItems(updated);
   };
+  // Update quantity of a product
+  const updateQuantity = (productId, newQty) => {
+    if (newQty < 1) return; 
+    const updated = cartItems.map((item) =>
+      item.id === productId ? { ...item, quantity: newQty } : item
+    );
+    setCartItems(updated);
+  };
 
   // Calculate total items and price
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -45,7 +53,14 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, cartCount, cartTotal }}
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        cartCount,
+        cartTotal,
+        updateQuantity,
+      }}
     >
       {children}
     </CartContext.Provider>
