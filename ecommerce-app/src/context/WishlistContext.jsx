@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 
 export const WishlistContext = createContext();
-const [message, setMessage] = useState(""); // show message when add the item to wish list
 
 export function WishlistProvider({ children }) {
   const [wishlist, setWishlist] = useState(() => {
@@ -21,10 +20,6 @@ export function WishlistProvider({ children }) {
   const addToWishlist = (product) => {
     if (!wishlist.some((item) => item.id === product.id)) {
       setWishlist([...wishlist, product]);
-      setMessage(`${product.title} added to wishlist ❤️`);
-
-      // Auto-hide after 2.5s
-      setTimeout(() => setMessage(""), 2500);
     }
   };
 
@@ -34,7 +29,7 @@ export function WishlistProvider({ children }) {
 
   return (
     <WishlistContext.Provider
-      value={{ wishlist, addToWishlist, removeFromWishlist, message }}
+      value={{ wishlist, addToWishlist, removeFromWishlist }}
     >
       {children}
     </WishlistContext.Provider>
