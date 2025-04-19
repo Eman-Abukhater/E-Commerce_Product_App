@@ -1,5 +1,6 @@
 // src/context/CartContext.jsx
 import React, { createContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 export const CartContext = createContext();
 
@@ -28,8 +29,12 @@ export function CartProvider({ children }) {
         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
       );
       setCartItems(updated);
+      toast.info("Increased quantity in cart 🛒");
+
     } else {
       setCartItems([...cartItems, { ...product, quantity: 1 }]);
+      toast.success("Item added to cart ✅");
+
     }
   };
 
@@ -49,6 +54,8 @@ export function CartProvider({ children }) {
       item.id === productId ? { ...item, quantity: newQty } : item
     );
     setCartItems(updated);
+    toast.info("Cart quantity updated ✏️");
+
   };
 
   // Calculate total items and price

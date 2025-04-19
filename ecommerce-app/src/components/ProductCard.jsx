@@ -6,15 +6,15 @@ import { WishlistContext } from "../context/WishlistContext";
 export default function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
-  const [localMessage, setLocalMessage] = useState("");
-  const handleAddToWishlist = () => {
-    addToWishlist(product);
-    setLocalMessage(`added to wishlist ❤️`);
+  // const [localMessage, setLocalMessage] = useState("");
+  // const handleAddToWishlist = () => {
+  //   addToWishlist(product);
+  //   setLocalMessage(`added to wishlist ❤️`);
 
-    setTimeout(() => {
-      setLocalMessage("");
-    }, 2500);
-  };
+  //   setTimeout(() => {
+  //     setLocalMessage("");
+  //   }, 2500);
+  // };
   return (
     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition duration-400">
       <img
@@ -49,15 +49,15 @@ export default function ProductCard({ product }) {
       </button>
       <button
         className="mt-2 w-full bg-pink-500 text-white py-1 rounded hover:bg-pink-600"
-        onClick={handleAddToWishlist}
+        onClick={() => addToWishlist(product)}
       >
         ❤️ Add to Wishlist
       </button>
-      {localMessage && (
+      {/* {localMessage && (
         <div className="text-green-600 bg-green-100 border border-green-300 px-4 py-2 rounded mt-2 text-sm">
           {localMessage}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
