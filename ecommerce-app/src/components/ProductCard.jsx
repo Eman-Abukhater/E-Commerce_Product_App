@@ -7,7 +7,6 @@ export default function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
 
-
   return (
     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition duration-400">
       <img
@@ -39,6 +38,12 @@ export default function ProductCard({ product }) {
         onClick={() => addToCart(product)}
       >
         Add to Cart
+      </button>
+      <button
+        className="mt-2 w-full bg-pink-500 text-white py-1 rounded hover:bg-pink-600"
+        onClick={() => addToWishlist(product)}
+      >
+        ❤️ Add to Wishlist
       </button>
     </div>
   );
