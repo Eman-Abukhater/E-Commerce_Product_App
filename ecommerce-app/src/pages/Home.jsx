@@ -11,6 +11,8 @@ export default function Home() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [minRating, setMinRating] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6;
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -38,6 +40,9 @@ export default function Home() {
     setMaxPrice("");
     setMinRating("");
   };
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, sort, searchText, minPrice, maxPrice, minRating]);
 
   const filteredProducts = products
     .filter((product) =>
@@ -62,6 +67,10 @@ export default function Home() {
       if (sort === "za") return b.title.localeCompare(a.title);
       return 0;
     });
+  const indexOfLast = currentPage * productsPerPage;
+  const indexOfFirst = indexOfLast - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8 md:px-8">
@@ -101,10 +110,26 @@ export default function Home() {
             No products found.
           </p>
         ) : (
-          filteredProducts.map((product) => (
+          currentProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))
         )}
+      </div>
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 gap-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`px-3 py-1 rounded ${
+              currentPage === i + 1
+                ? "bg-indigo-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
