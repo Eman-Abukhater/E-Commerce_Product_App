@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom"; // ⬅️ Add this line
+import { WishlistContext } from "../context/WishlistContext";
 
 export default function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
+  const { addToWishlist } = useContext(WishlistContext);
+
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition duration-400">
