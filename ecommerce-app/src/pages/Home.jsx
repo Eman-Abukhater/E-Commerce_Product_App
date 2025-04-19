@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Filter from "../components/Filter";
 import ProductCard from "../components/ProductCard";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -13,6 +15,7 @@ export default function Home() {
   const [minRating, setMinRating] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -23,8 +26,10 @@ export default function Home() {
           ...new Set(data.map((product) => product.category)),
         ];
         setCategories(uniqueCategories);
+        setIsLoading(false); // Set loading to false once products are fetched
       })
       .catch((error) => console.error("Error fetching products:", error));
+    setIsLoading(false); // Set loading to false in case of error
   }, []);
 
   const handleCategoryChange = (category) => setSelectedCategory(category);
@@ -104,13 +109,24 @@ export default function Home() {
       />
 
       {/* Products */}
+      {/* Products */}
+      {/* Products */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredProducts.length === 0 ? (
+        {isLoading ? (
+          // Skeleton loader
+          Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className="bg-white p-4 rounded-lg shadow-md">
+              <Skeleton height={200} />
+              <Skeleton count={2} />
+              <Skeleton width="60%" />
+            </div>
+          ))
+        ) : filteredProducts.length === 0 ? (
           <p className="text-center col-span-full text-gray-500">
             No products found.
           </p>
         ) : (
-          currentProducts.map((product) => (
+          filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))
         )}
