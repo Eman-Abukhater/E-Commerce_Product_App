@@ -8,20 +8,16 @@ import { WishlistProvider } from "./context/WishlistContext";
 function App() {
   return (
     // Wrap the entire app with CartProvider
-    
+
     <WishlistProvider>
-
-    <CartProvider>
-
-    <BrowserRouter>
-      <div className="min-h-screen bg-gray-100">
-
-        <Navbar />
-
-        <AppRoutes />
-      </div>
-    </BrowserRouter>
-    </CartProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <div className="min-h-screen bg-gray-100">
+            <Navbar />
+            <AppRoutes />
+          </div>
+        </BrowserRouter>
+      </CartProvider>
     </WishlistProvider>
   );
 }
