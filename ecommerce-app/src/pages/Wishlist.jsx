@@ -11,7 +11,7 @@ export default function Wishlist() {
       {wishlist.length === 0 ? (
         <p>Your wishlist is empty.</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
           {wishlist.map((item) => (
             <div key={item.id} className="p-4 border rounded-xl shadow bg-white">
               <img src={item.image} alt={item.title} className="h-32  mx-auto" />
