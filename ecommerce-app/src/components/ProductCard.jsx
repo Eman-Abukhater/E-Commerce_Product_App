@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom"; // ⬅️ Add this line
-import { WishlistContext } from "../context/WishlistContext";
+const { addToWishlist, message } = useContext(WishlistContext);
 
 export default function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
@@ -45,6 +45,11 @@ export default function ProductCard({ product }) {
       >
         ❤️ Add to Wishlist
       </button>
+      {message && (
+        <div className="text-green-600 bg-green-100 border border-green-300 px-4 py-2 rounded mb-2 text-sm">
+          {message}
+        </div>
+      )}
     </div>
   );
 }
