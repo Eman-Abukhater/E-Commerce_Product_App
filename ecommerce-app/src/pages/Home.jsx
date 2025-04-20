@@ -68,11 +68,15 @@ export default function Home() {
       product.title.toLowerCase().includes(searchText.toLowerCase())
     )
     .filter((product) =>
-      minPrice ? product.price >= parseFloat(minPrice) : true
+      minPrice !== "" && parseFloat(minPrice) >= 0
+        ? product.price >= parseFloat(minPrice)
+        : true
     )
     .filter((product) =>
-      maxPrice !== "" ? product.price <= parseFloat(maxPrice) : true
-    )
+      maxPrice !== "" && parseFloat(maxPrice) >= 0
+        ? product.price <= parseFloat(maxPrice)
+        : true
+    )    
     .filter((product) =>
       minRating ? product.rating.rate >= parseFloat(minRating) : true
     )

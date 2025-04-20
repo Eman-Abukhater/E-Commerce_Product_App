@@ -33,16 +33,28 @@ export default function Filter({
       {/* Price Range Filter */}
       <input
         type="number"
+        min="0"
         placeholder="Min Price"
         value={minPrice}
-        onChange={(e) => onMinPriceChange(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === "" || parseFloat(value) >= 0) {
+            onMinPriceChange(value);
+          }
+        }}
         className="border p-2 rounded-lg w-28 mx-auto sm:mx-0"
       />
       <input
         type="number"
         placeholder="Max Price"
+        min="0"
         value={maxPrice}
-        onChange={(e) => onMaxPriceChange(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === "" || parseFloat(value) >= 0) {
+            onMaxPriceChange(value);
+          }
+        }}
         className="border p-2 rounded-lg w-28 mx-auto sm:mx-0 "
       />
 
@@ -72,8 +84,8 @@ export default function Filter({
         <option value="az">Title: A → Z</option>
         <option value="za">Title: Z → A</option>
       </select>
-       {/* Clear Filters Button */}
-       <button
+      {/* Clear Filters Button */}
+      <button
         onClick={onClearFilters}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition"
       >
