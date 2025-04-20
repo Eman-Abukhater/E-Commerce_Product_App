@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Filter from "../components/Filter";
 import ProductCard from "../components/ProductCard";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { DarkModeContext } from '../context/DarkModeContext'; // Import the context
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -16,7 +17,8 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
   const [isLoading, setIsLoading] = useState(true);
-  const [isPageLoading, setIsPageLoading] = useState(false); // 👈 New loading state for pagination
+  const [isPageLoading, setIsPageLoading] = useState(false); //New loading state for pagination
+  const { darkMode, setDarkMode } = useContext(DarkModeContext); // Access context directly
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -88,10 +90,17 @@ export default function Home() {
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-8 md:px-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 px-4 py-8">
       <h1 className="text-3xl font-bold text-center mb-8 text-indigo-400">
         🛍️ Shop Our Products
       </h1>
+
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="px-4 py-2 my-3  float-end rounded bg-indigo-400 text-white dark:bg-yellow-400 dark:text-black"
+      >
+        Toggle {darkMode ? 'Light' : 'Dark'} Mode
+      </button>
 
       {/* Search Bar */}
       <input

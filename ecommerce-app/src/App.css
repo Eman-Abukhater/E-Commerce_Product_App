@@ -1,0 +1,16 @@
+/* Global styles (App.css or global stylesheet) */
+html {
+    --background-color: white;
+    --text-color: black;
+  }
+  
+  html.dark {
+    --background-color: black;
+    --text-color: white;
+  }
+  
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  

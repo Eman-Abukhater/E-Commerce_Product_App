@@ -6,9 +6,14 @@ import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { ToastContainer } from "react-toastify"; //Import ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Import Toast styles
+import { DarkModeProvider } from "./context/DarkModeContext";
+
+
 
 function App() {
   return (
+
+    <DarkModeProvider>
     <WishlistProvider>
       <CartProvider>
         <BrowserRouter>
@@ -20,6 +25,7 @@ function App() {
         </BrowserRouter>
       </CartProvider>
     </WishlistProvider>
+    </DarkModeProvider>
   );
 }
 
