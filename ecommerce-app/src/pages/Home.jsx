@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Filter from "../components/Filter";
 import ProductCard from "../components/ProductCard";
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -15,7 +15,21 @@ export default function Home() {
   const [minRating, setMinRating] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 6;
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(false); // 👈 New loading state for pagination
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -26,11 +40,18 @@ export default function Home() {
           ...new Set(data.map((product) => product.category)),
         ];
         setCategories(uniqueCategories);
-        setIsLoading(false); // Set loading to false once products are fetched
+        setIsLoading(false);
       })
       .catch((error) => console.error("Error fetching products:", error));
-    setIsLoading(false); // Set loading to false in case of error
   }, []);
+
+  const handlePageChange = (page) => {
+    setIsPageLoading(true);
+    setTimeout(() => {
+      setCurrentPage(page);
+      setIsPageLoading(false);
+    }, 500); // Simulate loading time (optional)
+  };
 
   const handleCategoryChange = (category) => setSelectedCategory(category);
   const handleSortChange = (sortOption) => setSort(sortOption);
@@ -45,6 +66,7 @@ export default function Home() {
     setMaxPrice("");
     setMinRating("");
   };
+
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, sort, searchText, minPrice, maxPrice, minRating]);
@@ -60,7 +82,7 @@ export default function Home() {
       minPrice ? product.price >= parseFloat(minPrice) : true
     )
     .filter((product) =>
-      maxPrice ? product.price <= parseFloat(maxPrice) : true
+      maxPrice !== "" ? product.price <= parseFloat(maxPrice) : true
     )
     .filter((product) =>
       minRating ? product.rating.rate >= parseFloat(minRating) : true
@@ -72,16 +94,25 @@ export default function Home() {
       if (sort === "za") return b.title.localeCompare(a.title);
       return 0;
     });
+
   const indexOfLast = currentPage * productsPerPage;
   const indexOfFirst = indexOfLast - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   return (
-    <div className="min-h-screen bg-gray-100 px-4 py-8 md:px-8">
-      <h1 className="text-3xl font-bold text-center mb-8 text-indigo-400 ">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900  px-4 py-8 md:px-8">
+      <h1 className="text-3xl font-bold text-center mb-8 text-indigo-400">
         🛍️ Shop Our Products
       </h1>
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="px-4 py-2 rounded bg-indigo-400 text-white dark:bg-yellow-400 dark:text-black"
+        >
+          Toggle {darkMode ? "Light" : "Dark"} Mode
+        </button>
+      </div>
 
       {/* Search Bar */}
       <input
@@ -109,11 +140,8 @@ export default function Home() {
       />
 
       {/* Products */}
-      {/* Products */}
-      {/* Products */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {isLoading ? (
-          // Skeleton loader
+        {isLoading || isPageLoading ? (
           Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="bg-white p-4 rounded-lg shadow-md">
               <Skeleton height={200} />
@@ -126,26 +154,50 @@ export default function Home() {
             No products found.
           </p>
         ) : (
-          filteredProducts.map((product) => (
+          currentProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))
         )}
       </div>
+
       {/* Pagination */}
-      <div className="flex justify-center mt-6 gap-2">
-        {Array.from({ length: totalPages }, (_, i) => (
+      <div className="flex flex-col items-center mt-6 gap-4">
+        <div className="flex gap-2">
           <button
-            key={i}
-            onClick={() => setCurrentPage(i + 1)}
-            className={`px-3 py-1 rounded ${
-              currentPage === i + 1
-                ? "bg-indigo-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1 || isPageLoading}
+            className="px-3 py-1 rounded bg-indigo-500 text-white disabled:bg-gray-300"
           >
-            {i + 1}
+            Previous
           </button>
-        ))}
+
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => handlePageChange(i + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === i + 1
+                  ? "bg-indigo-500 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+              disabled={isPageLoading}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages || isPageLoading}
+            className="px-3 py-1 rounded bg-indigo-500 text-white disabled:bg-gray-300"
+          >
+            Next
+          </button>
+        </div>
+
+        <p className="text-gray-600">
+          Page {currentPage} of {totalPages}
+        </p>
       </div>
     </div>
   );
