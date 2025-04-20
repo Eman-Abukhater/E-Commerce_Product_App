@@ -1,13 +1,15 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import { DarkModeContext } from "../context/DarkModeContext"; // Import the context
 
 export default function Cart() {
   const { cartItems, removeFromCart, cartTotal, cartCount, updateQuantity } =
     useContext(CartContext);
+  const { darkMode, setDarkMode } = useContext(DarkModeContext); // Access context directly
 
   return (
-    <div className="px-4 py-8 md:px-8 min-h-screen bg-gray-50">
+    <div className="px-4 py-8 md:px-8 min-h-screen bg-gray-50  dark:bg-gray-900">
       <h1 className="text-3xl font-bold text-indigo-500 mb-6 text-center md:text-left">
         🛒 Your Cart
       </h1>

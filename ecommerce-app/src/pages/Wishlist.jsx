@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 
 export default function Wishlist() {
   const { wishlist, removeFromWishlist } = useContext(WishlistContext);
-
   return (
-    <div className="p-6">
+    <div className="p-6 ">
       <h1 className="text-2xl font-bold text-pink-500 mb-4">Wishlist</h1>
       {wishlist.length === 0 ? (
         <p>Your wishlist is empty.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4  ">
           {wishlist.map((item) => (
             <div key={item.id} className="p-4 border rounded-xl shadow bg-white">
               <img src={item.image} alt={item.title} className="h-32  mx-auto" />
