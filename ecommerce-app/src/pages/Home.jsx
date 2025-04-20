@@ -17,19 +17,6 @@ export default function Home() {
   const productsPerPage = 6;
   const [isLoading, setIsLoading] = useState(true);
   const [isPageLoading, setIsPageLoading] = useState(false); // 👈 New loading state for pagination
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -50,7 +37,7 @@ export default function Home() {
     setTimeout(() => {
       setCurrentPage(page);
       setIsPageLoading(false);
-    }, 500); // Simulate loading time (optional)
+    }, 500); // 👈 Simulate loading time (optional)
   };
 
   const handleCategoryChange = (category) => setSelectedCategory(category);
@@ -101,18 +88,10 @@ export default function Home() {
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900  px-4 py-8 md:px-8">
+    <div className="min-h-screen bg-gray-100 px-4 py-8 md:px-8">
       <h1 className="text-3xl font-bold text-center mb-8 text-indigo-400">
         🛍️ Shop Our Products
       </h1>
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="px-4 py-2 rounded bg-indigo-400 text-white dark:bg-yellow-400 dark:text-black"
-        >
-          Toggle {darkMode ? "Light" : "Dark"} Mode
-        </button>
-      </div>
 
       {/* Search Bar */}
       <input
