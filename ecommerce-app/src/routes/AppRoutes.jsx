@@ -5,6 +5,8 @@ import Wishlist from "../pages/Wishlist";
 import Cart from "../pages/Cart";
 import NotFound from "../pages/NotFound";
 import ProductDetails from "../pages/ProductDetails";
+import ThankYou from "../pages/ThankYou";
+import Cancel from "../pages/Cancel";
 
 const AppRoutes = () => {
   return (
@@ -13,8 +15,12 @@ const AppRoutes = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/product/:id" element={<ProductDetails />} />
-      <Route path="*" element={<NotFound />} />
       
+      {/* Stripe Checkout Pages */}
+      <Route path="/thank-you" element={<ThankYou />} />
+      <Route path="/cancel" element={<Cancel />} />
+      
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
