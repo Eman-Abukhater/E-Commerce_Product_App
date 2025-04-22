@@ -39,7 +39,7 @@ export default function Home() {
     setTimeout(() => {
       setCurrentPage(page);
       setIsPageLoading(false);
-    }, 500); // 👈 Simulate loading time (optional)
+    }, 500); //  Simulate loading time (optional)
   };
 
   const handleCategoryChange = (category) => setSelectedCategory(category);
