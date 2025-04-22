@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../context/DarkModeContext"; // Import the context
+import CheckoutButton from "../components/CheckoutButton";
 
 export default function Cart() {
   const { cartItems, removeFromCart, cartTotal, cartCount, updateQuantity } =
@@ -78,6 +79,11 @@ export default function Cart() {
           </div>
         </>
       )}
+      {/* Checkout Button */}
+      <CheckoutButton />
+
     </div>
+    
+
   );
 }
